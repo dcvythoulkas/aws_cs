@@ -18,22 +18,51 @@ resource "aws_sns_topic" "dummy_topic" {
   fifo_topic = true
 }
 
-# data "aws_sns_topic" "dummy_topic" {
-#   name = "dummy_topic.fifo"
-# }
-
 resource "aws_sqs_queue" "dummy_queue" {
-  name                        = "dummy_queue.fifo"
-  fifo_queue                  = true
-  content_based_deduplication = true
+  name       = "dummy_queue.fifo"
+  fifo_queue = true
 }
-
-# data "aws_sqs_queue" "dummy_queue" {
-#   name = "dummy_queue.fifo"
-# }
 
 resource "aws_sns_topic_subscription" "dummy_topic_sqs_target" {
   topic_arn = aws_sns_topic.dummy_topic.arn
   protocol  = "sqs"
   endpoint  = aws_sqs_queue.dummy_queue.arn
+}
+
+data "aws_iam_policy_document" "dummy_queue_policy" {
+  statement {
+    sid    = "__owner_statement"
+    effect = "Allow"
+
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::445198443645:root"]
+    }
+
+    actions   = ["sqs:*"]
+    resources = [aws_sqs_queue.dummy_queue.arn]
+  }
+  statement {
+    sid    = "topic-subscription-arn:aws:sns:eu-central-1:445198443645:dummy_topic.fifo"
+    effect = "Allow"
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
+    actions   = ["sqs:SendMessage"]
+    resources = [aws_sqs_queue.dummy_queue.arn]
+
+    condition {
+      test     = "ArnEquals"
+      variable = "aws:SourceArn"
+      values   = [aws_sns_topic.dummy_topic.arn]
+    }
+  }
+}
+
+resource "aws_sqs_queue_policy" "dummy_queue_policy" {
+  queue_url = aws_sqs_queue.dummy_queue.id
+  policy    = data.aws_iam_policy_document.dummy_queue_policy.json
 }
