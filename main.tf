@@ -19,20 +19,20 @@ resource "aws_sns_topic_subscription" "dummy_topic_sqs_target" {
 }
 
 data "aws_iam_policy_document" "dummy_queue_policy" {
+#  statement {
+#    sid    = "__owner_statement"
+#    effect = "Allow"
+#
+#    principals {
+#      type        = "AWS"
+#      identifiers = ["arn:aws:iam::445198443645:root"]
+#    }
+#
+#    actions   = ["sqs:*"]
+#    resources = [aws_sqs_queue.dummy_queue.arn]
+#  }
   statement {
-    sid    = "__owner_statement"
-    effect = "Allow"
-
-    principals {
-      type        = "AWS"
-      identifiers = ["arn:aws:iam::445198443645:root"]
-    }
-
-    actions   = ["sqs:*"]
-    resources = [aws_sqs_queue.dummy_queue.arn]
-  }
-  statement {
-    sid    = "topic-subscription-arn:aws:sns:eu-central-1:445198443645:dummy_topic.fifo"
+    sid    = "topic-subscription"
     effect = "Allow"
 
     principals {

@@ -1,7 +1,7 @@
 # A SNS-SQS-AWSRedrive connection
 
 ## Synopsis
-In short we use Terraform (and ONLY Terraform) to create a pair of Amazon SNS topic, subscribe a newly created Amazon SQS queue to it and then launch an Amazon EC2 instance with AWSRedrive installed, configured to attach to the nrew queue and running in tha background.
+In short we use Terraform (and ONLY Terraform) to create an Amazon SNS topic, subscribe a newly created Amazon SQS queue to it and then launch an Amazon EC2 instance with AWSRedrive installed, configured to attach to the new queue and running in the background.
 
 ## Prerequisites
 1. Install Terraform
@@ -14,7 +14,7 @@ In short we use Terraform (and ONLY Terraform) to create a pair of Amazon SNS to
     *. AmazonVPCFullAccess
     *. AmazonSNSFullAccess
   3. Create a dummy user in AWS IAM and assign him to our dummy group
-  4. Create a AWS Access key pair
+  4. Create a AWS Access key pair for our dummy user
 4. Add the Access key pair to our .bashrc
 ```
 export AWS_ACCESS_KEY_ID=<DUMMY_USER_ACCESS_KEY>
