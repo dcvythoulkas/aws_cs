@@ -11,10 +11,10 @@ In short we use Terraform (and ONLY Terraform) to create an Amazon SNS topic, su
     1. Create a dummy group in AWS IAM
     2. Grant the following permissions on the dummy group:
   
-        *. AmazonEC2FullAccess
-        *. AmazonSQSFullAccess
-        *. AmazonVPCFullAccess
-        *. AmazonSNSFullAccess
+        * AmazonEC2FullAccess
+        * AmazonSQSFullAccess
+        * AmazonVPCFullAccess
+        * AmazonSNSFullAccess
   
     3. Create a dummy user in AWS IAM and assign him to our dummy group
     4. Create a AWS Access key pair for our dummy user
